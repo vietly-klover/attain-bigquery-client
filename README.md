@@ -1,0 +1,1 @@
+Check https://bigquery.googleapis.com/$discovery/rest?version=v2 for documentation
