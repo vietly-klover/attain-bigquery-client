@@ -28,7 +28,8 @@ pub struct Job {
     /// Output only. Information about the job, including starting time and ending time of the job.
     pub statistics: Option<super::job_statistics::JobStatistics>,
 
-    /// Output only. The status of this job. Examine this value when polling an asynchronous job to see if the job is complete.
+    /// Output only. The status of this job. Examine this value when polling an asynchronous job to see if the job is
+    /// complete.
     pub status: Option<super::job_status::JobStatus>,
 
     /// Output only. [Full-projection-only] String representation of identity of requesting party.

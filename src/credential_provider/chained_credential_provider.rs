@@ -1,4 +1,3 @@
-use async_trait::async_trait;
 use std::sync::{Arc, Mutex};
 
 use super::{CredentialError, CredentialProvider};
@@ -25,14 +24,13 @@ impl ChainedCredentialProvider {
     }
 }
 
-#[async_trait]
 impl CredentialProvider for ChainedCredentialProvider {
-    async fn fetch_credentials(&self) -> Result<String, CredentialError> {
+    fn fetch_credentials(&self) -> Result<String, CredentialError> {
         for provider in self.providers.iter() {
-            match provider.fetch_credentials().await {
+            match provider.fetch_credentials() {
                 Ok(cred) => {
                     let mut last = self.last_successful.lock().unwrap();
-                    *last = Some(Arc::clone(provider));
+                    *last = Some(provider.clone());
                     return Ok(cred);
                 }
                 Err(CredentialError::NotFound) => continue,

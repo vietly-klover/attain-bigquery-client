@@ -1,14 +1,33 @@
-pub struct Jobs;
-
 use crate::api::models::{
     get_query_results_response::GetQueryResultsResponse, job::Job,
     job_cancel_response::JobCancelResponse, job_list::JobList, query_request::QueryRequest,
     query_response::QueryResponse,
 };
 
+use crate::client::jobs::requests::get_query_results_request::GetQueryResultsRequest;
+use crate::client::jobs::requests::list_jobs_request::ListJobsRequest;
+
+use crate::config_provider::ConfigProvider;
+use crate::credential_provider::CredentialProvider;
 use anyhow::Result;
+use std::sync::Arc;
+
+pub struct Jobs {
+    credential_provider: Arc<dyn CredentialProvider>,
+    config_provider: Arc<dyn ConfigProvider>,
+}
 
 impl Jobs {
+    pub fn new(
+        credential_provider: Arc<dyn CredentialProvider>,
+        config_provider: Arc<dyn ConfigProvider>,
+    ) -> Self {
+        Self {
+            credential_provider,
+            config_provider,
+        }
+    }
+
     /// Requests that a job be cancelled.
     pub async fn cancel_job(
         &self,
@@ -35,16 +54,9 @@ impl Jobs {
     }
 
     /// RPC to get the results of a query job.
-    pub async fn get_query_results(
+    pub async fn get_query_results<'a>(
         &self,
-        project_id: &str,
-        job_id: &str,
-        location: Option<&str>,
-        max_results: Option<u32>,
-        page_token: Option<&str>,
-        start_index: Option<&str>,
-        timeout_ms: Option<u32>,
-        format_options_use_int64_timestamp: Option<bool>,
+        request: GetQueryResultsRequest<'a>,
     ) -> Result<GetQueryResultsResponse> {
         todo!("Implement getQueryResults endpoint")
     }
@@ -55,18 +67,7 @@ impl Jobs {
     }
 
     /// Lists all jobs that you started in the specified project.
-    pub async fn list_jobs(
-        &self,
-        project_id: &str,
-        all_users: Option<bool>,
-        max_creation_time: Option<&str>,
-        max_results: Option<u32>,
-        min_creation_time: Option<&str>,
-        page_token: Option<&str>,
-        parent_job_id: Option<&str>,
-        projection: Option<&str>,
-        state_filter: Option<Vec<&str>>,
-    ) -> Result<JobList> {
+    pub async fn list_jobs<'a>(&self, request: ListJobsRequest<'a>) -> Result<JobList> {
         todo!("Implement job list endpoint")
     }
 

@@ -10,6 +10,7 @@ pub struct TableReference {
     /// Required. The ID of the project containing this table.
     pub project_id: String,
 
-    /// Required. The ID of the table. The ID can contain Unicode characters in category L (letter), M (mark), N (number), Pc (connector, including underscore), Pd (dash), and Zs (space).
+    /// Required. The ID of the table. The ID can contain Unicode characters in category L (letter), M (mark), N
+    /// (number), Pc (connector, including underscore), Pd (dash), and Zs (space).
     pub table_id: String,
 }

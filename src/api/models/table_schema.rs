@@ -7,7 +7,8 @@ pub struct TableSchema {
     /// Describes the fields in a table.
     pub fields: Vec<TableFieldSchema>,
 
-    /// Optional. Specifies metadata of the foreign data type definition in field schema (TableFieldSchema.foreign_type_definition).
+    /// Optional. Specifies metadata of the foreign data type definition in field schema
+    /// (TableFieldSchema.foreign_type_definition).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub foreign_type_info: Option<ForeignTypeInfo>,
 }
@@ -26,7 +27,8 @@ pub struct TableFieldSchema {
     /// Required. The field data type.
     pub field_type: String,
 
-    /// Optional. The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
+    /// Optional. The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is
+    /// NULLABLE.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub mode: Option<String>,
 
@@ -54,7 +56,8 @@ pub struct TableFieldSchema {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub policy_tags: Option<PolicyTags>,
 
-    /// Optional. Definition of the foreign data type. Only valid for top-level schema fields (not nested fields). If the type is FOREIGN, this field is required.
+    /// Optional. Definition of the foreign data type. Only valid for top-level schema fields (not nested fields). If
+    /// the type is FOREIGN, this field is required.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub foreign_type_definition: Option<String>,
 

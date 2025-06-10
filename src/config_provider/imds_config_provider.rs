@@ -1,6 +1,6 @@
 use super::ConfigProvider;
-use anyhow::Result;
 use std::time::Duration;
+use tracing::error;
 use ureq::{Agent, AgentBuilder};
 
 pub struct ImdsConfigProvider {
@@ -13,7 +13,7 @@ impl ImdsConfigProvider {
             .timeout_read(Duration::from_secs(1))
             .timeout_write(Duration::from_secs(1))
             .build();
-        
+
         Self { agent }
     }
 }
@@ -23,19 +23,32 @@ impl ConfigProvider for ImdsConfigProvider {
         // Transform the key to match Google Cloud metadata format
         // e.g. "project/project-id" -> "project/project-id"
         let metadata_path = format!("http://metadata.google.internal/computeMetadata/v1/{key}");
-        
-        match self.agent
+
+        match self
+            .agent
             .get(&metadata_path)
             .set("Metadata-Flavor", "Google")
-            .call() {
-                Ok(response) => {
-                    if response.status() == 200 {
-                        response.into_string().ok()
-                    } else {
-                        None
-                    }
+            .call()
+            .inspect_err(|e| error!(message = "IMDS request failed", ?e))
+        {
+            Ok(response) => {
+                if response.status() == 200 {
+                    response
+                        .into_string()
+                        .inspect_err(|e| error!(message = "Failed to read IMDS response", ?e))
+                        .ok()
+                } else {
+                    error!(
+                        message = "IMDS returned non-200 status",
+                        status = response.status()
+                    );
+                    None
                 }
-                Err(_) => None,
             }
+            Err(e) => {
+                error!(message = "IMDS request error", ?e);
+                None
+            }
+        }
     }
 }

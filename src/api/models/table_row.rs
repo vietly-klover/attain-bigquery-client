@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase")]
 pub struct TableRow {
     /// The fields in the row.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub f: Option<Vec<TableCell>>,
 }
 
@@ -13,5 +14,6 @@ pub struct TableRow {
 #[serde(rename_all = "camelCase")]
 pub struct TableCell {
     /// The value of the cell. Can be any type.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub v: Option<serde_json::Value>,
 }

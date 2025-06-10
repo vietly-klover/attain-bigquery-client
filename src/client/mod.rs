@@ -7,32 +7,72 @@ pub mod row_access_policies;
 pub mod tabledata;
 pub mod tables;
 
-pub struct Client;
+use crate::config_provider::ConfigProvider;
+use crate::credential_provider::CredentialProvider;
+use std::sync::Arc;
+
+pub struct Client {
+    credential_provider: Arc<dyn CredentialProvider>,
+    config_provider: Arc<dyn ConfigProvider>,
+}
 
 impl Client {
+    pub fn new(
+        credential_provider: Arc<dyn CredentialProvider>,
+        config_provider: Arc<dyn ConfigProvider>,
+    ) -> Self {
+        Self {
+            credential_provider,
+            config_provider,
+        }
+    }
     pub fn datasets(&self) -> Datasets {
-        Datasets
+        Datasets::new(
+            Arc::clone(&self.credential_provider),
+            Arc::clone(&self.config_provider),
+        )
     }
     pub fn jobs(&self) -> Jobs {
-        Jobs
+        Jobs::new(
+            Arc::clone(&self.credential_provider),
+            Arc::clone(&self.config_provider),
+        )
     }
     pub fn models(&self) -> Models {
-        Models
+        Models::new(
+            Arc::clone(&self.credential_provider),
+            Arc::clone(&self.config_provider),
+        )
     }
     pub fn projects(&self) -> Projects {
-        Projects
+        Projects::new(
+            Arc::clone(&self.credential_provider),
+            Arc::clone(&self.config_provider),
+        )
     }
     pub fn routines(&self) -> Routines {
-        Routines
+        Routines::new(
+            Arc::clone(&self.credential_provider),
+            Arc::clone(&self.config_provider),
+        )
     }
     pub fn row_access_policies(&self) -> RowAccessPolicies {
-        RowAccessPolicies
+        RowAccessPolicies::new(
+            Arc::clone(&self.credential_provider),
+            Arc::clone(&self.config_provider),
+        )
     }
     pub fn tabledata(&self) -> Tabledata {
-        Tabledata
+        Tabledata::new(
+            Arc::clone(&self.credential_provider),
+            Arc::clone(&self.config_provider),
+        )
     }
     pub fn tables(&self) -> Tables {
-        Tables
+        Tables::new(
+            Arc::clone(&self.credential_provider),
+            Arc::clone(&self.config_provider),
+        )
     }
 }
 

@@ -12,12 +12,14 @@ use serde::{Deserialize, Serialize};
 /// - query_label
 /// - service_account
 ///
-/// Additional properties are allowed, but ignored. Specifying multiple connection properties with the same key returns an error.
+/// Additional properties are allowed, but ignored. Specifying multiple connection properties with the same key
+/// returns an error.
 #[derive(Debug, Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct ConnectionProperty {
     /// The key of the property to set.
     pub key: Option<String>,
+
     /// The value of the property to set.
     pub value: Option<String>,
 }
