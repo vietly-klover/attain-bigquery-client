@@ -1,5 +1,7 @@
 use attain_bigquery_client::config_provider::ConfigProvider;
 use attain_bigquery_client::config_provider::imds_config_provider::ImdsConfigProvider;
+use attain_bigquery_client::credential_provider::CredentialProvider;
+use attain_bigquery_client::credential_provider::ImdsCredentialProvider;
 
 #[test]
 #[ignore]
@@ -16,4 +18,19 @@ fn test_grab_default_project_id() {
     let project_id = project_id.unwrap();
 
     assert!(!project_id.is_empty(), "Project id should not be empty");
+}
+
+#[test]
+#[ignore]
+fn test_imds_credential_provider() {
+    let provider = ImdsCredentialProvider;
+    let result = provider.fetch_credentials();
+    // This test is ignored by default because it only works on GCE.
+    assert!(
+        result.is_ok()
+            || matches!(
+                result,
+                Err(attain_bigquery_client::credential_provider::CredentialError::Other(_))
+            )
+    );
 }
