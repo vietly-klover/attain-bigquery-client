@@ -23,7 +23,7 @@ fn test_grab_default_project_id() {
 #[test]
 #[ignore]
 fn test_imds_credential_provider() {
-    let provider = ImdsCredentialProvider;
+    let provider = ImdsCredentialProvider::default();
     let result = provider.fetch_credentials();
     // This test is ignored by default because it only works on GCE.
     assert!(

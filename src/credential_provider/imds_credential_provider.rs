@@ -24,8 +24,8 @@ struct CachedToken {
     expires_at: Instant,
 }
 
-impl ImdsCredentialProvider {
-    pub fn new() -> Self {
+impl Default for ImdsCredentialProvider {
+    fn default() -> Self {
         Self {
             cache: Mutex::new(None),
         }
